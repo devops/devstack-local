@@ -1,0 +1,119 @@
+[[local|localrc]]
+#OFFLINE=True
+DEST=/opt/stack
+
+# Enable Logging
+LOGFILE=$DEST/logs/stack.sh.log
+VERBOSE=True
+LOG_COLOR=True
+SCREEN_LOGDIR=$DEST/logs
+
+# Pre-requisite
+ENABLED_SERVICES=rabbit,mysql,key
+
+# Horizon
+ENABLED_SERVICES+=,horizon
+
+# Nova
+ENABLED_SERVICES+=,n-api,n-crt,n-obj,n-cpu,n-cond,n-sch
+
+# Glance
+ENABLED_SERVICES+=,g-api,g-reg
+
+# Neutron
+ENABLED_SERVICES+=,q-svc,q-agt,q-dhcp,q-l3,q-meta
+
+# Enable LBaaS V2
+#ENABLED_SERVICES+=,q-lbaasv2
+
+# Neutron - VPN as a Service
+#ENABLED_SERVICES+=,q-vpn
+
+# Neutron - Firewall as a Service
+#ENABLED_SERVICES+=,q-fwaas
+
+# Cinder
+ENABLED_SERVICES+=,c-api,c-vol,c-sch
+
+# Swift
+#ENABLED_SERVICES+=,s-proxy s-object s-container s-account
+
+# Tempest
+ENABLED_SERVICES+=,tempest
+
+# Password Configure
+ADMIN_PASSWORD=devstack
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+SERVICE_TOKEN=fd0c560962b697770b11
+
+# Service Repos
+GIT_BASE=https://github.com
+GIT_BASE_LOCAL=http://code.inspur.local
+CINDER_REPO=${GIT_BASE_LOCAL}/openstack/cinder.git
+GLANCE_REPO=${GIT_BASE_LOCAL}/openstack/glance.git
+HEAT_REPO=${GIT_BASE_LOCAL}/openstack/heat.git
+HORIZON_REPO=${GIT_BASE_LOCAL}/openstack/horizon.git
+IRONIC_REPO=${GIT_BASE_LOCAL}/openstack/ironic.git
+KEYSTONE_REPO=${GIT_BASE_LOCAL}/openstack/keystone.git
+NEUTRON_REPO=${GIT_BASE_LOCAL}/openstack/neutron.git
+NEUTRON_FWAAS_REPO=${GIT_BASE_LOCAL}/openstack/neutron-fwaas.git
+NEUTRON_LBAAS_REPO=${GIT_BASE_LOCAL}/openstack/neutron-lbaas.git
+NEUTRON_VPNAAS_REPO=${GIT_BASE_LOCAL}/openstack/neutron-vpnaas.git
+NOVA_REPO=${GIT_BASE_LOCAL}/openstack/nova.git
+SWIFT_REPO=${GIT_BASE_LOCAL}/openstack/swift.git
+REQUIREMENTS_REPO=${GIT_BASE_LOCAL}/openstack/requirements.git
+TEMPEST_REPO=${GIT_BASE_LOCAL}/openstack/tempest.git
+TEMPEST_LIB_REPO=${GIT_BASE_LOCAL}/openstack/tempest-lib.git
+
+RHEL7_RDO_REPO_RPM="https://repos.fedorapeople.org/repos/openstack/openstack-liberty/rdo-release-liberty-2.noarch.rpm"
+RHEL7_RDO_REPO_ID="openstack-liberty"
+
+####
+HOST_IP=192.168.57.11
+SERVICE_HOST=$HOST_IP
+MYSQL_HOST=$SERVICE_HOST
+RABBIT_HOST=$SERVICE_HOST
+GLANCE_HOSTPORT=$SERVICE_HOST:9292
+
+
+# Do not use Nova-Network
+disable_service n-net
+
+## Neutron options
+Q_USE_SECGROUP=True
+FLOATING_RANGE="192.168.57.0/24"
+FIXED_RANGE="10.0.0.0/24"
+Q_FLOATING_ALLOCATION_POOL=start=192.168.57.230,end=192.168.57.250
+PUBLIC_NETWORK_GATEWAY="192.168.57.254"
+PUBLIC_INTERFACE=eth1
+
+# Open vSwitch provider networking configuration
+Q_USE_PROVIDERNET_FOR_PUBLIC=True
+OVS_PHYSICAL_BRIDGE=br-ex
+PUBLIC_BRIDGE=br-ex
+OVS_BRIDGE_MAPPINGS=public:br-ex
+
+# VLAN configuration - LinuxBridge + VLAN
+#Q_PLUGIN=linuxbridge
+#ENABLE_TENANT_VLANS=True
+#TENANT_VLAN_RANGE=3000:4000
+#PHYSICAL_NETWORK=default
+#LB_PHYSICAL_INTERFACE=eth1
+
+# VLAN configuration - Open VSwitch + VLAN
+#ENABLE_TENANT_VLANS=True
+#TENANT_VLAN_RANGE=3000:4000
+#PHYSICAL_NETWORK=default
+#OVS_PHYSICAL_INTERFACE=eth1
+
+# GRE tunnel configuration
+#Q_PLUGIN=ml2
+#ENABLE_TENANT_TUNNELS=True
+
+# VXLAN tunnel configuration
+#Q_PLUGIN=ml2
+#Q_ML2_TENANT_NETWORK_TYPE=vxlan
+
+#IMAGE_URLS+=",http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-uec.tar.gz"
