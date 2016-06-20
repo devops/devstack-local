@@ -41,6 +41,11 @@ ENABLED_SERVICES+=,c-api,c-vol,c-sch
 # Tempest
 ENABLED_SERVICES+=,tempest
 
+# Ceilometer - Metering Service (metering + alarming)
+enable_plugin ceilometer https://git.openstack.org/openstack/ceilometer.git
+ENABLED_SERVICES+=,ceilometer-acompute,ceilometer-acentral,ceilometer-anotification,ceilometer-collector,ceilometer-api
+ENABLED_SERVICES+=,ceilometer-alarm-notify,ceilometer-alarm-eval
+
 # Password Configure
 ADMIN_PASSWORD=devstack
 DATABASE_PASSWORD=$ADMIN_PASSWORD
